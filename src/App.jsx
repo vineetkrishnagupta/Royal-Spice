@@ -23,6 +23,7 @@ const StaffPage        = lazy(() => import('@/pages/staff/StaffPage'))
 const ReportsPage      = lazy(() => import('@/pages/reports/ReportsPage'))
 const SuppliersPage    = lazy(() => import('@/pages/suppliers/SuppliersPage'))
 const SettingsPage     = lazy(() => import('@/pages/settings/SettingsPage'))
+const BlogPage         = lazy(() => import('@/pages/blog/BlogPage'))
 
 const SuspenseWrap = ({ children }) => (
   <Suspense fallback={<div className="flex items-center justify-center h-full"><PageLoader /></div>}>
@@ -35,6 +36,9 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* Public blog route */}
+          <Route path="/blog" element={<SuspenseWrap><BlogPage /></SuspenseWrap>} />
+
           {/* Auth routes */}
           <Route element={<GuestGuard><AuthLayout /></GuestGuard>}>
             <Route path="/login" element={<SuspenseWrap><LoginPage /></SuspenseWrap>} />

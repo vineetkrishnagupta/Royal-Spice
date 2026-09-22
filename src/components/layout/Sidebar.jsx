@@ -5,7 +5,7 @@ import {
   LayoutDashboard, ShoppingCart, ClipboardList, Grid3x3,
   ChefHat, UtensilsCrossed, Package, Users, UserCircle,
   BarChart3, Truck, Settings, ChevronLeft, ChevronRight,
-  Flame,
+  Flame, BookOpen,
 } from 'lucide-react'
 
 const navItems = [
@@ -21,6 +21,7 @@ const navItems = [
   { path: '/reports', icon: BarChart3, label: 'Reports' },
   { path: '/suppliers', icon: Truck, label: 'Suppliers' },
   { path: '/settings', icon: Settings, label: 'Settings' },
+  { path: '/blog', icon: BookOpen, label: 'Blog & Docs' },
 ]
 
 export default function Sidebar({ collapsed, onToggle }) {
