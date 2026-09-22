@@ -216,7 +216,15 @@ Generating legally compliant tax receipts in India requires strict adhesion to G
 
 const CATEGORIES = ['All', 'Architecture', 'Multi-Tenancy', 'KDS', 'Inventory', 'Floor & Tables', 'Billing & Compliance']
 
+import { useEffect as UseEffectReact } from 'react'
+
 export default function BlogPage() {
+  UseEffectReact(() => {
+    const saved = localStorage.getItem('darkMode')
+    const isDark = saved !== null ? saved === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches
+    document.documentElement.classList.toggle('dark', isDark)
+  }, [])
+
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [activeArticle, setActiveArticle] = useState(null)
@@ -235,9 +243,9 @@ export default function BlogPage() {
   const featuredPost = BLOG_POSTS.find(p => p.featured) || BLOG_POSTS[0]
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-primary-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-primary-500 selection:text-white">
       {/* Top Bar / Navigation */}
-      <header className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+      <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/" className="flex items-center gap-2.5 group">
@@ -245,10 +253,10 @@ export default function BlogPage() {
                 <Flame className="w-5 h-5 text-white" />
               </div>
               <div>
-                <span className="font-bold text-base text-white tracking-tight flex items-center gap-1.5">
+                <span className="font-bold text-base text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5">
                   Royal Spice <span className="text-primary-500">Chronicle</span>
                 </span>
-                <span className="text-[10px] text-slate-400 block -mt-1 font-mono uppercase tracking-wider">POS Tech Journal</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 block -mt-1 font-mono uppercase tracking-wider">POS Tech Journal</span>
               </div>
             </Link>
           </div>
@@ -273,23 +281,23 @@ export default function BlogPage() {
       </header>
 
       {/* Hero Banner (Magazine Cover Style) */}
-      <div className="relative border-b border-slate-800 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 py-12 lg:py-16">
+      <div className="relative border-b border-slate-200 dark:border-slate-800 bg-gradient-to-b from-slate-100 via-slate-50 to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-950 py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-xs font-semibold uppercase tracking-wider mb-4">
               <Sparkles className="w-3.5 h-3.5" />
               Project Documentation & Insights
             </div>
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
               Inside Royal Spice POS: <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-amber-300 to-primary-500">Engineering Modern Restaurant Tech</span>
             </h1>
-            <p className="mt-4 text-base sm:text-lg text-slate-400 leading-relaxed">
+            <p className="mt-4 text-base sm:text-lg text-slate-500 dark:text-slate-400 leading-relaxed">
               Explore in-depth design systems, cloud architecture, real-time kitchen orchestration, multi-tenancy, and inventory costing powering next-generation dining operations.
             </p>
           </div>
 
           {/* Search & Category Pills */}
-          <div className="mt-8 pt-6 border-t border-slate-800/80 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+          <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800/80 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
               {CATEGORIES.map(cat => (
                 <button
@@ -298,8 +306,8 @@ export default function BlogPage() {
                   className={cn(
                     'px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all',
                     selectedCategory === cat
-                      ? 'bg-primary-600 text-white shadow-sm shadow-primary-500/30'
-                      : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
+                      ? 'bg-primary-600 text-slate-900 dark:text-white shadow-sm shadow-primary-500/30'
+                      : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
                   )}
                 >
                   {cat}
@@ -314,7 +322,7 @@ export default function BlogPage() {
                 placeholder="Search articles, tags..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="w-full pl-9 pr-4 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder-slate-500 text-xs focus:outline-none focus:ring-1 focus:ring-primary-500"
               />
             </div>
           </div>
@@ -332,7 +340,7 @@ export default function BlogPage() {
             {selectedCategory === 'All' && !searchQuery && (
               <article 
                 onClick={() => setActiveArticle(featuredPost)}
-                className="group cursor-pointer rounded-2xl bg-gradient-to-br from-slate-900 to-slate-900/60 border border-slate-800 hover:border-primary-500/50 p-6 sm:p-8 transition-all hover:shadow-2xl hover:shadow-primary-500/5 relative overflow-hidden"
+                className="group cursor-pointer rounded-2xl bg-gradient-to-br from-slate-900 to-slate-900/60 border border-slate-200 dark:border-slate-800 hover:border-primary-500/50 p-6 sm:p-8 transition-all hover:shadow-2xl hover:shadow-primary-500/5 relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20 group-hover:bg-primary-500/15 transition-all" />
                 
@@ -341,23 +349,23 @@ export default function BlogPage() {
                     Featured Story
                   </span>
                   <span className="text-slate-500">•</span>
-                  <span className="text-slate-400">{featuredPost.category}</span>
+                  <span className="text-slate-500 dark:text-slate-400">{featuredPost.category}</span>
                   <span className="text-slate-500">•</span>
-                  <span className="text-slate-400 flex items-center gap-1">
+                  <span className="text-slate-500 dark:text-slate-400 flex items-center gap-1">
                     <Clock className="w-3 h-3 text-slate-500" />
                     {featuredPost.readTime}
                   </span>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl font-bold text-white group-hover:text-primary-400 transition-colors leading-snug">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white group-hover:text-primary-400 transition-colors leading-snug">
                   {featuredPost.title}
                 </h2>
 
-                <p className="mt-3 text-slate-400 text-sm leading-relaxed line-clamp-3">
+                <p className="mt-3 text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">
                   {featuredPost.excerpt}
                 </p>
 
-                <div className="mt-6 pt-5 border-t border-slate-800/80 flex items-center justify-between">
+                <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <img
                       src={featuredPost.author.avatar}
@@ -365,8 +373,8 @@ export default function BlogPage() {
                       className="w-9 h-9 rounded-full object-cover ring-2 ring-slate-800"
                     />
                     <div>
-                      <p className="text-xs font-semibold text-white">{featuredPost.author.name}</p>
-                      <p className="text-[10px] text-slate-400">{featuredPost.author.role}</p>
+                      <p className="text-xs font-semibold text-slate-900 dark:text-white">{featuredPost.author.name}</p>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400">{featuredPost.author.role}</p>
                     </div>
                   </div>
 
@@ -383,7 +391,7 @@ export default function BlogPage() {
                 <article
                   key={post.id}
                   onClick={() => setActiveArticle(post)}
-                  className="group cursor-pointer flex flex-col justify-between rounded-xl bg-slate-900/70 border border-slate-800/90 hover:border-slate-700 p-5 transition-all hover:bg-slate-900 hover:shadow-lg"
+                  className="group cursor-pointer flex flex-col justify-between rounded-xl bg-white/70 dark:bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/90 hover:border-slate-700 p-5 transition-all hover:bg-slate-50 dark:hover:bg-slate-900 hover:shadow-lg"
                 >
                   <div>
                     <div className="flex items-center justify-between text-xs mb-3">
@@ -396,23 +404,23 @@ export default function BlogPage() {
                       </span>
                     </div>
 
-                    <h3 className="text-base font-bold text-white group-hover:text-primary-400 transition-colors line-clamp-2 leading-snug">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-primary-400 transition-colors line-clamp-2 leading-snug">
                       {post.title}
                     </h3>
 
-                    <p className="mt-2 text-xs text-slate-400 line-clamp-3 leading-relaxed">
+                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">
                       {post.excerpt}
                     </p>
                   </div>
 
-                  <div className="mt-5 pt-4 border-t border-slate-800/60 flex items-center justify-between">
+                  <div className="mt-5 pt-4 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <img
                         src={post.author.avatar}
                         alt={post.author.name}
                         className="w-6 h-6 rounded-full object-cover"
                       />
-                      <span className="text-[11px] text-slate-300 font-medium truncate max-w-[110px]">
+                      <span className="text-[11px] text-slate-700 dark:text-slate-300 font-medium truncate max-w-[110px]">
                         {post.author.name}
                       </span>
                     </div>
@@ -426,13 +434,13 @@ export default function BlogPage() {
             </div>
 
             {filteredPosts.length === 0 && (
-              <div className="text-center py-16 bg-slate-900/40 rounded-xl border border-slate-800">
+              <div className="text-center py-16 bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800">
                 <BookOpen className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-                <h3 className="text-base font-semibold text-white">No articles found</h3>
-                <p className="text-xs text-slate-400 mt-1">Try refining your search query or selecting "All" categories.</p>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-white">No articles found</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Try refining your search query or selecting "All" categories.</p>
                 <button
                   onClick={() => { setSelectedCategory('All'); setSearchQuery('') }}
-                  className="mt-4 px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
+                  className="mt-4 px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-900 dark:text-white rounded-lg transition-colors"
                 >
                   Clear Filters
                 </button>
@@ -444,29 +452,29 @@ export default function BlogPage() {
           <aside className="lg:col-span-4 space-y-6">
             
             {/* Project Overview Widget */}
-            <div className="rounded-xl bg-slate-900 border border-slate-800 p-5">
-              <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+            <div className="rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5">
+              <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
                 <Layers className="w-4 h-4 text-primary-500" />
                 About Royal Spice POS
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                 A full-stack, multi-tenant cloud POS platform engineered for fine-dining restaurants, cloud kitchens, and cafes.
               </p>
 
-              <div className="mt-4 grid grid-cols-2 gap-2 pt-3 border-t border-slate-800">
-                <div className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/80">
+              <div className="mt-4 grid grid-cols-2 gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80">
                   <p className="text-[10px] text-slate-500 uppercase font-mono">DB Tables</p>
-                  <p className="text-lg font-bold text-white">32 Schema</p>
+                  <p className="text-lg font-bold text-slate-900 dark:text-white">32 Schema</p>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/80">
+                <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80">
                   <p className="text-[10px] text-slate-500 uppercase font-mono">Sync Latency</p>
                   <p className="text-lg font-bold text-emerald-400">&lt; 80 ms</p>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/80">
+                <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80">
                   <p className="text-[10px] text-slate-500 uppercase font-mono">Multi-Tenant</p>
                   <p className="text-lg font-bold text-primary-400">Postgres RLS</p>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/80">
+                <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80">
                   <p className="text-[10px] text-slate-500 uppercase font-mono">Compliance</p>
                   <p className="text-lg font-bold text-amber-400">GST 5/12%</p>
                 </div>
@@ -478,8 +486,8 @@ export default function BlogPage() {
               <div className="flex items-center gap-2 text-primary-400 text-xs font-bold uppercase tracking-wider mb-2">
                 <Flame className="w-4 h-4" /> Live POS Demo
               </div>
-              <h4 className="text-sm font-semibold text-white">Ready to test the interface?</h4>
-              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Ready to test the interface?</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
                 Launch the terminal to test quick billing, dine-in table ordering, and kitchen ticket dispatching.
               </p>
               <div className="mt-4 space-y-2">
@@ -489,7 +497,7 @@ export default function BlogPage() {
                   </Button>
                 </Link>
                 <Link to="/kitchen" className="block w-full">
-                  <Button fullWidth variant="outline" size="sm" className="text-xs border-slate-700 text-slate-300">
+                  <Button fullWidth variant="outline" size="sm" className="text-xs border-slate-700 text-slate-700 dark:text-slate-300">
                     Open Kitchen Display (KDS)
                   </Button>
                 </Link>
@@ -497,8 +505,8 @@ export default function BlogPage() {
             </div>
 
             {/* Popular Topics / Tags Widget */}
-            <div className="rounded-xl bg-slate-900 border border-slate-800 p-5">
-              <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+            <div className="rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5">
+              <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
                 <Tag className="w-4 h-4 text-primary-500" />
                 Key Technologies
               </h3>
@@ -506,7 +514,7 @@ export default function BlogPage() {
                 {['React 19', 'Vite 8', 'Supabase Realtime', 'PostgreSQL RLS', 'Tailwind CSS', 'Zustand', 'Recharts', 'ESC/POS', 'GST Invoicing', 'KDS'].map(tech => (
                   <span
                     key={tech}
-                    className="px-2.5 py-1 rounded-md bg-slate-950 border border-slate-800 text-slate-400 text-[11px] font-mono hover:border-slate-700 transition-colors"
+                    className="px-2.5 py-1 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-[11px] font-mono hover:border-slate-700 transition-colors"
                   >
                     #{tech}
                   </span>
@@ -515,19 +523,19 @@ export default function BlogPage() {
             </div>
 
             {/* Newsletter / RSS Subscribe Widget */}
-            <div className="rounded-xl bg-slate-900 border border-slate-800 p-5 text-center">
+            <div className="rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 text-center">
               <BookOpen className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-              <h4 className="text-sm font-semibold text-white">Subscribe to POS Releases</h4>
-              <p className="text-xs text-slate-400 mt-1">Get updates on new POS features, barcode scanners, and inventory models.</p>
+              <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Subscribe to POS Releases</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Get updates on new POS features, barcode scanners, and inventory models.</p>
               <div className="mt-3 flex gap-1.5">
                 <input
                   type="email"
                   placeholder="name@restaurant.com"
-                  className="flex-1 px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                  className="flex-1 px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
                 />
                 <button
                   onClick={() => alert('Thank you for subscribing!')}
-                  className="px-3 py-1.5 rounded-lg bg-primary-600 hover:bg-primary-500 text-xs text-white font-semibold transition-colors"
+                  className="px-3 py-1.5 rounded-lg bg-primary-600 hover:bg-primary-500 text-xs text-slate-900 dark:text-white font-semibold transition-colors"
                 >
                   Join
                 </button>
@@ -541,21 +549,21 @@ export default function BlogPage() {
 
       {/* Reader Modal (Full Blog Article View) */}
       {activeArticle && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fade-in">
-          <div className="relative w-full max-w-3xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-8">
+        <div className="fixed inset-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fade-in">
+          <div className="relative w-full max-w-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-8">
             
             {/* Modal Header Bar */}
-            <div className="sticky top-0 z-10 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+            <div className="sticky top-0 z-10 bg-white dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-6 py-4 flex items-center justify-between">
               <button
                 onClick={() => setActiveArticle(null)}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" /> Back to all articles
               </button>
 
               <button
                 onClick={() => setActiveArticle(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-800 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -566,17 +574,17 @@ export default function BlogPage() {
               <div className="flex items-center gap-3 text-xs mb-4">
                 <Badge color="orange">{activeArticle.category}</Badge>
                 <span className="text-slate-500">•</span>
-                <span className="text-slate-400">{activeArticle.date}</span>
+                <span className="text-slate-500 dark:text-slate-400">{activeArticle.date}</span>
                 <span className="text-slate-500">•</span>
-                <span className="text-slate-400">{activeArticle.readTime}</span>
+                <span className="text-slate-500 dark:text-slate-400">{activeArticle.readTime}</span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white leading-tight">
                 {activeArticle.title}
               </h1>
 
               {/* Author Strip */}
-              <div className="mt-5 pb-6 border-b border-slate-800 flex items-center justify-between">
+              <div className="mt-5 pb-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <img
                     src={activeArticle.author.avatar}
@@ -584,15 +592,15 @@ export default function BlogPage() {
                     className="w-10 h-10 rounded-full object-cover ring-2 ring-slate-800"
                   />
                   <div>
-                    <p className="text-xs font-bold text-white">{activeArticle.author.name}</p>
-                    <p className="text-[11px] text-slate-400">{activeArticle.author.role}</p>
+                    <p className="text-xs font-bold text-slate-900 dark:text-white">{activeArticle.author.name}</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">{activeArticle.author.role}</p>
                   </div>
                 </div>
 
                 <div className="flex gap-2">
                   <button
                     onClick={() => { navigator.clipboard?.writeText(window.location.href); alert('Link copied!') }}
-                    className="p-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                    className="p-2 rounded-lg bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white transition-colors"
                     title="Share article"
                   >
                     <Share2 className="w-4 h-4" />
@@ -601,14 +609,14 @@ export default function BlogPage() {
               </div>
 
               {/* Formatted Article Body */}
-              <div className="mt-8 text-slate-300 text-sm sm:text-base leading-relaxed space-y-4">
+              <div className="mt-8 text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed space-y-4">
                 {activeArticle.content.split('\n\n').map((para, index) => {
                   if (para.startsWith('### ')) {
-                    return <h3 key={index} className="text-xl font-bold text-white pt-4">{para.replace('### ', '')}</h3>
+                    return <h3 key={index} className="text-xl font-bold text-slate-900 dark:text-white pt-4">{para.replace('### ', '')}</h3>
                   }
                   if (para.startsWith('1. ') || para.startsWith('- ')) {
                     return (
-                      <div key={index} className="pl-4 border-l-2 border-primary-500/40 space-y-1 text-slate-300">
+                      <div key={index} className="pl-4 border-l-2 border-primary-500/40 space-y-1 text-slate-700 dark:text-slate-300">
                         {para.split('\n').map((line, lIdx) => (
                           <p key={lIdx} className="text-sm">{line}</p>
                         ))}
@@ -617,22 +625,22 @@ export default function BlogPage() {
                   }
                   if (para.startsWith('```')) {
                     return (
-                      <pre key={index} className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-primary-300 overflow-x-auto">
+                      <pre key={index} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono text-primary-300 overflow-x-auto">
                         {para.replace(/```[a-z]*/g, '')}
                       </pre>
                     )
                   }
                   if (para.trim() === '---') {
-                    return <hr key={index} className="border-slate-800 my-6" />
+                    return <hr key={index} className="border-slate-200 dark:border-slate-800 my-6" />
                   }
-                  return <p key={index} className="text-sm text-slate-300 leading-relaxed">{para}</p>
+                  return <p key={index} className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{para}</p>
                 })}
               </div>
 
               {/* Tags */}
-              <div className="mt-8 pt-6 border-t border-slate-800 flex flex-wrap gap-2">
+              <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap gap-2">
                 {activeArticle.tags.map(t => (
-                  <span key={t} className="px-2.5 py-1 rounded-md bg-slate-950 border border-slate-800 text-xs font-mono text-slate-400">
+                  <span key={t} className="px-2.5 py-1 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-500 dark:text-slate-400">
                     #{t}
                   </span>
                 ))}
@@ -641,8 +649,8 @@ export default function BlogPage() {
               {/* Bottom CTA in Modal */}
               <div className="mt-8 p-6 rounded-xl bg-gradient-to-r from-primary-950/40 via-slate-950 to-slate-950 border border-primary-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
-                  <h4 className="text-sm font-bold text-white">Experience Royal Spice POS Live</h4>
-                  <p className="text-xs text-slate-400 mt-0.5">Explore the live terminal, orders board, and analytics.</p>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">Experience Royal Spice POS Live</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Explore the live terminal, orders board, and analytics.</p>
                 </div>
                 <Link to="/dashboard" onClick={() => setActiveArticle(null)}>
                   <Button size="sm" className="text-xs">
@@ -658,13 +666,13 @@ export default function BlogPage() {
       )}
 
       {/* Footer */}
-      <footer className="border-t border-slate-800 bg-slate-950 py-8 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-8 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© 2026 Royal Spice POS Systems. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link to="/login" className="hover:text-slate-300 transition-colors">POS Terminal</Link>
-            <Link to="/kitchen" className="hover:text-slate-300 transition-colors">Kitchen Display</Link>
-            <Link to="/signup" className="hover:text-slate-300 transition-colors">Register Restaurant</Link>
+            <Link to="/login" className="hover:text-slate-700 dark:text-slate-300 transition-colors">POS Terminal</Link>
+            <Link to="/kitchen" className="hover:text-slate-700 dark:text-slate-300 transition-colors">Kitchen Display</Link>
+            <Link to="/signup" className="hover:text-slate-700 dark:text-slate-300 transition-colors">Register Restaurant</Link>
           </div>
         </div>
       </footer>

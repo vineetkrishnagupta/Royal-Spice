@@ -14,8 +14,9 @@ export default function AppLayout() {
 
   const [collapsed, setCollapsed] = useState(false)
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('darkMode') === 'true' ||
-      window.matchMedia('(prefers-color-scheme: dark)').matches
+    const saved = localStorage.getItem('darkMode')
+    if (saved !== null) return saved === 'true'
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
   })
 
   // Apply dark mode class to <html>
