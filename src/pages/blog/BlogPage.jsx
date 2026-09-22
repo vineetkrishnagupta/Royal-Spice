@@ -391,7 +391,7 @@ export default function BlogPage() {
                 <article
                   key={post.id}
                   onClick={() => setActiveArticle(post)}
-                  className="group cursor-pointer flex flex-col justify-between rounded-xl bg-white/70 dark:bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/90 hover:border-slate-700 p-5 transition-all hover:bg-slate-50 dark:hover:bg-slate-900 hover:shadow-lg"
+                  className="group cursor-pointer flex flex-col justify-between rounded-xl bg-white/70 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/90 hover:border-slate-700 p-5 transition-all hover:bg-slate-50 dark:hover:bg-slate-900 hover:shadow-lg"
                 >
                   <div>
                     <div className="flex items-center justify-between text-xs mb-3">
