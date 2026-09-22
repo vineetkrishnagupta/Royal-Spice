@@ -150,7 +150,7 @@ export default function POSPage() {
   const filteredProducts = products
 
   return (
-    <div className="flex h-full gap-0 -m-6 overflow-hidden">
+    <div className="flex h-full gap-0 overflow-hidden">
       {/* ── Left: Categories ── */}
       <div className="w-40 lg:w-44 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col flex-shrink-0 overflow-y-auto no-scrollbar">
         <div className="px-3 py-4">

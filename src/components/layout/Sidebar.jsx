@@ -2,7 +2,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/utils/helpers'
 import { useAuth } from '@/contexts/AuthContext'
 import {
-  LayoutDashboard, ShoppingCart, ClipboardList, Grid3x3,
+  LayoutDashboard, ClipboardList, Grid3x3,
   ChefHat, UtensilsCrossed, Package, Users, UserCircle,
   BarChart3, Truck, Settings, ChevronLeft, ChevronRight,
   Flame, BookOpen,
@@ -10,7 +10,6 @@ import {
 
 const navItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/pos', icon: ShoppingCart, label: 'POS' },
   { path: '/orders', icon: ClipboardList, label: 'Orders' },
   { path: '/tables', icon: Grid3x3, label: 'Tables' },
   { path: '/kitchen', icon: ChefHat, label: 'Kitchen' },

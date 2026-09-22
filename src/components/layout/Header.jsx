@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Bell, Sun, Moon, LogOut, User, ChevronDown, Building2, Search } from 'lucide-react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { Bell, Sun, Moon, LogOut, User, ChevronDown, Building2, Search, ShoppingCart, ArrowLeft } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNotificationStore } from '@/store/useNotificationStore'
 import Avatar from '@/components/ui/Avatar'
@@ -12,6 +12,8 @@ export default function Header({ darkMode, onToggleDark }) {
   const { profile, restaurant, branch, signOut, switchBranch } = useAuth()
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotificationStore()
   const navigate = useNavigate()
+  const location = useLocation()
+  const isPOS = location.pathname.startsWith('/pos')
 
   const [showNotifs, setShowNotifs] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
@@ -70,7 +72,30 @@ export default function Header({ darkMode, onToggleDark }) {
       </div>
 
       {/* Right: Actions */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1.5">
+        {/* POS Quick Navigation Button */}
+        {isPOS ? (
+          <button
+            id="header-exit-pos-btn"
+            onClick={() => navigate('/dashboard')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs transition-all border border-slate-200 dark:border-slate-700 mr-1"
+            title="Exit POS to Dashboard"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Dashboard</span>
+          </button>
+        ) : (
+          <button
+            id="header-pos-btn"
+            onClick={() => navigate('/pos')}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-semibold text-xs shadow-sm hover:shadow transition-all duration-150 active:scale-95 mr-1 group"
+            title="Open POS Terminal"
+          >
+            <ShoppingCart className="w-3.5 h-3.5 transition-transform group-hover:scale-110" />
+            <span>POS</span>
+          </button>
+        )}
+
         {/* Dark mode toggle */}
         <button
           onClick={onToggleDark}

@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from '@/components/layout/Sidebar'
 import Header from '@/components/layout/Header'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNotificationStore } from '@/store/useNotificationStore'
+import { cn } from '@/utils/helpers'
 
 export default function AppLayout() {
   const { restaurant } = useAuth()
   const { fetchNotifications, subscribeToNotifications, unsubscribe } = useNotificationStore()
+  const location = useLocation()
+  const isPOS = location.pathname.startsWith('/pos')
+
   const [collapsed, setCollapsed] = useState(false)
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('darkMode') === 'true' ||
@@ -30,13 +34,15 @@ export default function AppLayout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-slate-950">
-      {/* Sidebar */}
-      <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(v => !v)} />
+      {/* Sidebar - completely hidden on POS view */}
+      {!isPOS && (
+        <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(v => !v)} />
+      )}
 
       {/* Main area */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Header darkMode={darkMode} onToggleDark={() => setDarkMode(v => !v)} />
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className={cn('flex-1', isPOS ? 'p-0 overflow-hidden' : 'overflow-y-auto p-6')}>
           <Outlet />
         </main>
       </div>
