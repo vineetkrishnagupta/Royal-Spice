@@ -1,16 +1,84 @@
-# React + Vite
+# Modern Restaurant POS System
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A fully-featured, ultra-modern, and highly responsive Point of Sale (POS) system tailored for restaurants, cafes, and cloud kitchens. Built with a focus on speed, beautiful aesthetics, and seamless mobile responsiveness.
 
-Currently, two official plugins are available:
+## ✨ Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 🛒 Next-Gen POS Interface
+- **Mobile-First Design:** A fluid layout featuring a swipeable categories bar on mobile and a slide-up floating cart.
+- **Lightning Fast Orders:** Quickly add items, adjust quantities, apply discounts, and assign orders to specific tables or customers.
+- **Order Types:** Support for Dine-In, Takeaway, and Delivery.
+- **Smart Search:** Instantly find menu items with real-time filtering.
 
-## React Compiler
+### 📊 Comprehensive Dashboard
+- **Real-time Analytics:** Track daily revenue, average order value, pending orders, and cash vs UPI/Card sales at a glance.
+- **Responsive Sidebar:** Fully responsive slide-in drawer on mobile devices with smooth animations.
+- **Theme Support:** Beautiful Dark Mode and Light Mode with system auto-detection and manual overrides.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🍔 Menu & Inventory Management
+- **Image Cropping:** Built-in image cropper (`react-easy-crop`) ensures perfect square aspect ratios for menu items before saving them (using high-speed Base64 encoding).
+- **Categories & Taxes:** Easily manage dynamic categories and multiple tax slabs (e.g. GST).
+- **Veg/Non-Veg Indicators:** Visual badges for dietary preferences.
 
-## Expanding the Oxlint configuration
+### 🔔 Real-Time Notifications
+- **Supabase Realtime:** Instant updates for new orders, kitchen alerts, and low stock warnings without refreshing the page.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## 🛠️ Technology Stack
+
+- **Frontend Framework:** React 18 + Vite
+- **Styling:** Tailwind CSS (with native dark mode support)
+- **Icons:** Lucide React
+- **Backend & Database:** Supabase (PostgreSQL, Authentication, Realtime)
+- **State Management:** Zustand (for Cart, Notifications, and Settings)
+- **Routing:** React Router v6
+- **Hosting:** Vercel (with `vercel.json` for SPA rewrites)
+
+## 🚀 Getting Started
+
+### Prerequisites
+Make sure you have Node.js and npm installed on your machine.
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/vineetkrishnagupta/Royal-Spice.git
+   cd Royal-Spice
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+   Create a `config.json` file in the root of the project to securely hold your Supabase credentials (this project explicitly avoids `.env` for configuration as per user preferences):
+   ```json
+   {
+     "VITE_SUPABASE_URL": "your_supabase_url",
+     "VITE_SUPABASE_ANON_KEY": "your_supabase_anon_key"
+   }
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+5. Build for production:
+   ```bash
+   npm run build
+   ```
+
+## 📱 Mobile Responsiveness
+This application was meticulously designed to work as well on a 6-inch phone as it does on a 27-inch monitor. 
+- The **POS Screen** hides complex menus behind sleek floating action buttons on mobile.
+- The **Dashboard** collapses the navigation sidebar into a gesture-friendly drawer.
+- Tables and data grids employ horizontal scrolling to prevent layout breakage.
+
+## 📝 Design Philosophy
+- **No Emojis:** The UI relies entirely on clean, professional SVG icons (`lucide-react`) for a sleek, premium feel.
+- **Vibrant Aesthetics:** carefully chosen color palettes (with a primary brand color), smooth micro-animations, and glassmorphism elements to provide a "Wow" factor.
+
+## 📄 License
+This project is proprietary and confidential.
