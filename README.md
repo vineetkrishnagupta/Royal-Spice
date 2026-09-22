@@ -1,5 +1,7 @@
 # Modern Restaurant POS System
 
+**Live Demo:** [https://royalspice-eight.vercel.app](https://royalspice-eight.vercel.app)
+
 A fully-featured, ultra-modern, and highly responsive Point of Sale (POS) system tailored for restaurants, cafes, and cloud kitchens. Built with a focus on speed, beautiful aesthetics, and seamless mobile responsiveness.
 
 ## ✨ Key Features
