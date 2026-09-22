@@ -198,8 +198,8 @@ export default function MenuPage() {
 
   useEffect(() => { if (activeTab === 'Products') fetchProducts() }, [fetchProducts, activeTab])
 
-  const openAdd = () => { setEditing(null); setForm({ name: '', description: '', price: '', cost_price: '', category_id: categories[0]?.id || '', tax_id: taxes[0]?.id || '', is_veg: true, is_available: true, is_featured: false, prep_time: 15 }); setShowModal(true) }
-  const openEdit = (p) => { setEditing(p); setForm({ name: p.name, description: p.description || '', price: String(p.price), cost_price: String(p.cost_price || 0), category_id: p.category_id || '', tax_id: p.tax_id || '', is_veg: p.is_veg, is_available: p.is_available, is_featured: p.is_featured, prep_time: p.prep_time || 15 }); setShowModal(true) }
+  const openAdd = () => { setEditing(null); setForm({ name: '', description: '', price: '', cost_price: '', category_id: categories[0]?.id || '', tax_id: taxes[0]?.id || '', image_url: '', is_veg: true, is_available: true, is_featured: false, prep_time: 15 }); setShowModal(true) }
+  const openEdit = (p) => { setEditing(p); setForm({ name: p.name, description: p.description || '', price: String(p.price), cost_price: String(p.cost_price || 0), category_id: p.category_id || '', tax_id: p.tax_id || '', image_url: p.image_url || '', is_veg: p.is_veg, is_available: p.is_available, is_featured: p.is_featured, prep_time: p.prep_time || 15 }); setShowModal(true) }
 
   const saveProduct = async () => {
     if (!form.name || !form.price) return
@@ -229,8 +229,12 @@ export default function MenuPage() {
   const columns = [
     { header: 'Product', cell: (row) => (
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center flex-shrink-0 text-lg">
-          {row.is_veg ? <Leaf className="w-5 h-5 text-emerald-500" /> : <Drumstick className="w-5 h-5 text-red-500" />}
+        <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center flex-shrink-0 text-lg overflow-hidden">
+          {row.image_url ? (
+            <img src={row.image_url} alt={row.name} className="w-full h-full object-cover" />
+          ) : (
+            row.is_veg ? <Leaf className="w-5 h-5 text-emerald-500" /> : <Drumstick className="w-5 h-5 text-red-500" />
+          )}
         </div>
         <div>
           <p className="text-sm font-medium text-slate-800 dark:text-slate-200">{row.name}</p>
@@ -297,6 +301,9 @@ export default function MenuPage() {
           <Select label="Category" value={form.category_id} onChange={e => setForm(p => ({ ...p, category_id: e.target.value }))} options={categories.map(c => ({ value: c.id, label: c.name }))} placeholder="Select category" />
           <Select label="Tax" value={form.tax_id} onChange={e => setForm(p => ({ ...p, tax_id: e.target.value }))} options={taxes.map(t => ({ value: t.id, label: `${t.name} (${t.rate}%)` }))} placeholder="Select tax" />
           <Input label="Prep Time (mins)" type="number" value={form.prep_time} onChange={e => setForm(p => ({ ...p, prep_time: e.target.value }))} min={1} />
+          <div className="col-span-2">
+            <Input label="Image URL" value={form.image_url} onChange={e => setForm(p => ({ ...p, image_url: e.target.value }))} placeholder="https://example.com/image.jpg" />
+          </div>
           <div className="col-span-2">
             <Textarea label="Description" value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} placeholder="Product description..." rows={2} />
           </div>
