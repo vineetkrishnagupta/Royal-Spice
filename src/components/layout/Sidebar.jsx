@@ -23,15 +23,26 @@ const navItems = [
   { path: '/blog', icon: BookOpen, label: 'Blog & Docs' },
 ]
 
-export default function Sidebar({ collapsed, onToggle }) {
+export default function Sidebar({ collapsed, onToggle, mobileOpen, closeMobile }) {
   const { restaurant } = useAuth()
   const location = useLocation()
 
   return (
-    <aside className={cn(
-      'flex flex-col h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 ease-in-out relative',
-      collapsed ? 'w-16' : 'w-60',
-    )}>
+    <>
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden animate-fade-in" 
+          onClick={closeMobile} 
+        />
+      )}
+
+      <aside className={cn(
+        'flex flex-col h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 ease-in-out',
+        'fixed inset-y-0 left-0 z-50 md:relative',
+        mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+        collapsed ? 'w-16' : 'w-60',
+      )}>
       {/* Logo */}
       <div className={cn(
         'flex items-center gap-3 px-4 py-4 border-b border-slate-200 dark:border-slate-800 flex-shrink-0',
@@ -57,6 +68,7 @@ export default function Sidebar({ collapsed, onToggle }) {
             key={path}
             to={path}
             title={collapsed ? label : undefined}
+            onClick={() => closeMobile && closeMobile()}
             className={({ isActive }) => cn(
               'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group',
               collapsed ? 'justify-center px-2' : '',
@@ -92,5 +104,6 @@ export default function Sidebar({ collapsed, onToggle }) {
         </button>
       </div>
     </aside>
+    </>
   )
 }

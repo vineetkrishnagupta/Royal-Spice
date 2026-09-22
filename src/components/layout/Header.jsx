@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Bell, Sun, Moon, LogOut, User, ChevronDown, Building2, Search, ShoppingCart, ArrowLeft, AlertTriangle, CheckCircle, Banknote, Info } from 'lucide-react'
+import { Bell, Sun, Moon, LogOut, User, ChevronDown, Building2, Search, ShoppingCart, ArrowLeft, AlertTriangle, CheckCircle, Banknote, Info, Menu } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNotificationStore } from '@/store/useNotificationStore'
 import Avatar from '@/components/ui/Avatar'
@@ -8,7 +8,7 @@ import Badge from '@/components/ui/Badge'
 import { formatDateTime } from '@/utils/formatters'
 import { cn } from '@/utils/helpers'
 
-export default function Header({ darkMode, onToggleDark }) {
+export default function Header({ darkMode, onToggleDark, onOpenMenu }) {
   const { profile, restaurant, branch, signOut, switchBranch } = useAuth()
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotificationStore()
   const navigate = useNavigate()
@@ -57,9 +57,17 @@ export default function Header({ darkMode, onToggleDark }) {
   return (
     <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 gap-4 flex-shrink-0">
       {/* Left: Branch + Date */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
+        {!isPOS && (
+          <button 
+            onClick={onOpenMenu}
+            className="md:hidden p-2 -ml-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+        )}
         <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-          <Building2 className="w-4 h-4 text-slate-400" />
+          <Building2 className="w-4 h-4 text-slate-400 hidden sm:block" />
           <span className="font-medium text-slate-800 dark:text-slate-200">
             {branch?.name || restaurant?.name || 'Royal Spice'}
           </span>

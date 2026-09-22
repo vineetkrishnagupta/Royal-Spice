@@ -13,6 +13,7 @@ export default function AppLayout() {
   const isPOS = location.pathname.startsWith('/pos')
 
   const [collapsed, setCollapsed] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode')
     if (saved !== null) return saved === 'true'
@@ -37,12 +38,21 @@ export default function AppLayout() {
     <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-slate-950">
       {/* Sidebar - completely hidden on POS view */}
       {!isPOS && (
-        <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(v => !v)} />
+        <Sidebar 
+          collapsed={collapsed} 
+          onToggle={() => setCollapsed(v => !v)} 
+          mobileOpen={mobileOpen}
+          closeMobile={() => setMobileOpen(false)}
+        />
       )}
 
       {/* Main area */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-        <Header darkMode={darkMode} onToggleDark={() => setDarkMode(v => !v)} />
+        <Header 
+          darkMode={darkMode} 
+          onToggleDark={() => setDarkMode(v => !v)} 
+          onOpenMenu={() => setMobileOpen(true)}
+        />
         <main className={cn('flex-1', isPOS ? 'p-0 overflow-hidden' : 'overflow-y-auto p-6')}>
           <Outlet />
         </main>
