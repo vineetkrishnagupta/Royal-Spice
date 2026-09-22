@@ -194,13 +194,13 @@ export default function POSPage() {
         {/* Order type + Search bar */}
         <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3 space-y-3">
           {/* Order type selector */}
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {ORDER_TYPES.map(({ value, label, icon: Icon }) => (
               <button
                 key={value}
                 onClick={() => cart.setOrderMeta({ orderType: value })}
                 className={cn(
-                  'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all border',
+                  'flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all border',
                   cart.orderType === value
                     ? 'bg-primary-600 text-white border-primary-600'
                     : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-primary-300',
