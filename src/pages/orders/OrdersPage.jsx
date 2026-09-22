@@ -192,13 +192,13 @@ export default function OrdersPage() {
           options={STATUS_OPTIONS}
           value={status}
           onChange={e => { setStatus(e.target.value); setPage(1) }}
-          className="w-40"
+          containerClassName="w-40"
         />
         <Select
           options={TYPE_OPTIONS}
           value={type}
           onChange={e => { setType(e.target.value); setPage(1) }}
-          className="w-36"
+          containerClassName="w-36"
         />
       </div>
 

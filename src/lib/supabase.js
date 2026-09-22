@@ -5,7 +5,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error(
-    '⚠️  Missing Supabase environment variables.\n' +
+    'Missing Supabase environment variables.\n' +
     'Create a .env file with VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.\n' +
     'See .env.example for reference.'
   )

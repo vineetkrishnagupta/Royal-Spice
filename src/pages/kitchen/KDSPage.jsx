@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { formatCurrency } from '@/utils/formatters'
 import { StatusBadge } from '@/components/ui/Badge'
 import { cn } from '@/utils/helpers'
-import { Clock, ChefHat, CheckCircle2, Star, RefreshCw, Timer } from 'lucide-react'
+import { Clock, ChefHat, CheckCircle2, Star, RefreshCw, Timer, MessageSquare, ArrowRight } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import toast from 'react-hot-toast'
 
@@ -235,14 +235,14 @@ export default function KDSPage() {
                                   <p key={mod.id} className="text-xs text-slate-400">• {mod.option_name}</p>
                                 ))}
                                 {item.notes && (
-                                  <p className="text-xs text-amber-600 dark:text-amber-400 italic">📝 {item.notes}</p>
+                                  <p className="text-xs text-amber-600 dark:text-amber-400 italic flex items-center gap-1 mt-0.5"><MessageSquare className="w-3 h-3" /> {item.notes}</p>
                                 )}
                               </div>
                             </div>
                           ))}
                           {order?.notes && (
                             <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-700">
-                              <p className="text-xs text-slate-400 italic">📝 {order.notes}</p>
+                              <p className="text-xs text-slate-400 italic flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {order.notes}</p>
                             </div>
                           )}
                         </div>
@@ -260,7 +260,7 @@ export default function KDSPage() {
                                 'bg-primary-600 text-white hover:bg-primary-700',
                               )}
                             >
-                              {NEXT_LABEL[key]} →
+                              <span className="flex items-center justify-center gap-1.5">{NEXT_LABEL[key]} <ArrowRight className="w-3.5 h-3.5" /></span>
                             </button>
                           </div>
                         )}

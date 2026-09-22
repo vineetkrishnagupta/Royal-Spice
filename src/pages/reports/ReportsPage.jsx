@@ -136,8 +136,8 @@ export default function ReportsPage() {
 
       {/* Date range */}
       <div className="card p-4 flex flex-wrap items-end gap-4">
-        <Input label="From Date" type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="w-40" />
-        <Input label="To Date" type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="w-40" />
+        <Input label="From Date" type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} containerClassName="w-40" />
+        <Input label="To Date" type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} containerClassName="w-40" />
         <Button onClick={fetchSalesReport} loading={loading}>Generate Report</Button>
       </div>
 

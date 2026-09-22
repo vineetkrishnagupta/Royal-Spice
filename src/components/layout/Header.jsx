@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Bell, Sun, Moon, LogOut, User, ChevronDown, Building2, Search, ShoppingCart, ArrowLeft } from 'lucide-react'
+import { Bell, Sun, Moon, LogOut, User, ChevronDown, Building2, Search, ShoppingCart, ArrowLeft, AlertTriangle, CheckCircle, Banknote, Info } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNotificationStore } from '@/store/useNotificationStore'
 import Avatar from '@/components/ui/Avatar'
@@ -45,13 +45,13 @@ export default function Header({ darkMode, onToggleDark }) {
 
   const notifTypeIcon = (type) => {
     const icons = {
-      new_order: '🛒',
-      low_stock: '⚠️',
-      order_ready: '✅',
-      payment: '💰',
-      system: 'ℹ️',
+      new_order: <ShoppingCart className="w-4 h-4 text-primary-500" />,
+      low_stock: <AlertTriangle className="w-4 h-4 text-amber-500" />,
+      order_ready: <CheckCircle className="w-4 h-4 text-emerald-500" />,
+      payment: <Banknote className="w-4 h-4 text-blue-500" />,
+      system: <Info className="w-4 h-4 text-slate-500" />,
     }
-    return icons[type] || '🔔'
+    return icons[type] || <Bell className="w-4 h-4 text-slate-400" />
   }
 
   return (
@@ -147,7 +147,7 @@ export default function Header({ darkMode, onToggleDark }) {
                       )}
                     >
                       <div className="flex gap-3">
-                        <span className="text-lg flex-shrink-0">{notifTypeIcon(n.type)}</span>
+                        <div className="flex-shrink-0 mt-0.5 p-1.5 bg-slate-100 dark:bg-slate-800 rounded-full">{notifTypeIcon(n.type)}</div>
                         <div className="min-w-0">
                           <p className={cn('text-xs font-medium', n.is_read ? 'text-slate-600 dark:text-slate-400' : 'text-slate-900 dark:text-slate-100')}>
                             {n.title}

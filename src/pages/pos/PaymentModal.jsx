@@ -12,11 +12,11 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
 const PAYMENT_METHODS = [
-  { value: 'cash', label: 'Cash', emoji: '💵' },
-  { value: 'card', label: 'Card', emoji: '💳' },
-  { value: 'upi', label: 'UPI', emoji: '📱' },
-  { value: 'online', label: 'Online', emoji: '🌐' },
-  { value: 'wallet', label: 'Wallet', emoji: '👛' },
+  { value: 'cash', label: 'Cash' },
+  { value: 'card', label: 'Card' },
+  { value: 'upi', label: 'UPI' },
+  { value: 'online', label: 'Online' },
+  { value: 'wallet', label: 'Wallet' },
 ]
 
 export default function PaymentModal({ isOpen, onClose }) {
@@ -152,7 +152,7 @@ export default function PaymentModal({ isOpen, onClose }) {
       })
 
       setCompleted(true)
-      toast.success('Payment completed! 🎉')
+      toast.success('Payment completed!')
       cart.clearCart()
     } catch (err) {
       console.error(err)
@@ -220,7 +220,7 @@ export default function PaymentModal({ isOpen, onClose }) {
                 className="input-base w-32 flex-shrink-0"
               >
                 {PAYMENT_METHODS.map(m => (
-                  <option key={m.value} value={m.value}>{m.emoji} {m.label}</option>
+                  <option key={m.value} value={m.value}>{m.label}</option>
                 ))}
               </select>
               <div className="relative flex-1">

@@ -6,7 +6,7 @@ import { formatCurrency } from '@/utils/formatters'
 import { cn } from '@/utils/helpers'
 import { Search, Plus, Minus, Trash2, Receipt, ChevronDown, User, Grid3x3,
   PercentSquare, Tag, Printer, ShoppingBag, Truck, UtensilsCrossed,
-  Globe, ClipboardList, X, Check, Leaf, Beef, Star } from 'lucide-react'
+  Globe, ClipboardList, X, Check, Leaf, Beef, Star, MessageSquare } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 import Modal from '@/components/ui/Modal'
@@ -409,8 +409,8 @@ function ProductCard({ product, onAdd }) {
         {product.image_url ? (
           <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-3xl">
-            {product.is_veg ? '🥗' : '🍗'}
+          <div className="w-full h-full flex items-center justify-center">
+            {product.is_veg ? <Leaf className="w-12 h-12 text-emerald-500" /> : <Beef className="w-12 h-12 text-red-500" />}
           </div>
         )}
         {product.is_featured && (
@@ -459,7 +459,7 @@ function CartItem({ item }) {
             </p>
           )}
           {item.notes && (
-            <p className="text-xs text-slate-400 italic mt-0.5 truncate">📝 {item.notes}</p>
+            <p className="text-xs text-slate-400 italic mt-0.5 truncate flex items-center gap-1"><MessageSquare className="w-3 h-3 flex-shrink-0" /> <span className="truncate">{item.notes}</span></p>
           )}
           <p className="text-xs text-slate-500 mt-0.5">{formatCurrency(item.unit_price)} each</p>
         </div>

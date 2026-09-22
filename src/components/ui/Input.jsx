@@ -56,10 +56,11 @@ export const Textarea = forwardRef(({
   hint,
   rows = 3,
   className,
+  containerClassName,
   ...props
 }, ref) => {
   return (
-    <div className="w-full">
+    <div className={cn('w-full', containerClassName)}>
       {label && (
         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
           {label}
@@ -91,10 +92,11 @@ export const Select = forwardRef(({
   options = [],
   placeholder,
   className,
+  containerClassName,
   ...props
 }, ref) => {
   return (
-    <div className="w-full">
+    <div className={cn('w-full', containerClassName)}>
       {label && (
         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
           {label}

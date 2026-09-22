@@ -9,7 +9,7 @@ import Modal from '@/components/ui/Modal'
 import { Input, Select } from '@/components/ui/Input'
 import Avatar from '@/components/ui/Avatar'
 import Badge from '@/components/ui/Badge'
-import { Plus, Edit2, UserCheck, UserX } from 'lucide-react'
+import { Plus, Edit2, UserCheck, UserX, Info } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const PAGE_SIZE = 20
@@ -117,7 +117,7 @@ export default function StaffPage() {
       <Pagination page={page} totalPages={Math.ceil(total / PAGE_SIZE)} totalItems={total} pageSize={PAGE_SIZE} onPageChange={setPage} />
 
       <div className="card p-4 bg-blue-50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-900/30">
-        <p className="text-sm text-blue-700 dark:text-blue-400 font-medium">ℹ️ To add new staff members, invite them via Supabase Auth. Staff accounts are created when users sign up with your restaurant's invitation link.</p>
+        <p className="text-sm text-blue-700 dark:text-blue-400 font-medium flex gap-1.5 items-start"><Info className="w-5 h-5 flex-shrink-0" /> <span>To add new staff members, invite them via Supabase Auth. Staff accounts are created when users sign up with your restaurant's invitation link.</span></p>
       </div>
 
       {/* Edit Modal */}

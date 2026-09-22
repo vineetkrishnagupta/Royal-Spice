@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Mail } from 'lucide-react'
+import { Mail, ArrowLeft, MailCheck } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import Button from '@/components/ui/Button'
 import toast from 'react-hot-toast'
@@ -29,13 +29,13 @@ export default function ForgotPasswordPage() {
   if (sent) {
     return (
       <div className="text-center space-y-4">
-        <div className="text-4xl">📧</div>
+        <div className="flex justify-center mb-2"><div className="p-3 bg-primary-500/20 text-primary-400 rounded-full"><MailCheck className="w-8 h-8" /></div></div>
         <h2 className="text-xl font-bold text-white">Check your inbox</h2>
         <p className="text-slate-400 text-sm">
           We've sent a password reset link to <span className="text-primary-400 font-medium">{email}</span>
         </p>
-        <Link to="/login" className="block text-sm text-primary-400 hover:text-primary-300 mt-4">
-          ← Back to login
+        <Link to="/login" className="flex items-center justify-center gap-1.5 text-sm text-primary-400 hover:text-primary-300 mt-4">
+          <ArrowLeft className="w-4 h-4" /> Back to login
         </Link>
       </div>
     )
@@ -69,8 +69,8 @@ export default function ForgotPasswordPage() {
         </Button>
       </form>
 
-      <Link to="/login" className="block text-center text-sm text-slate-500 hover:text-slate-400">
-        ← Back to login
+      <Link to="/login" className="flex items-center justify-center gap-1.5 text-sm text-slate-500 hover:text-slate-400">
+        <ArrowLeft className="w-4 h-4" /> Back to login
       </Link>
     </div>
   )

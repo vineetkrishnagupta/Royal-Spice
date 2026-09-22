@@ -8,7 +8,7 @@ import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
 import { Input, Select, Textarea } from '@/components/ui/Input'
 import Badge from '@/components/ui/Badge'
-import { Plus, Edit2, Trash2, Package, Eye, EyeOff, Copy } from 'lucide-react'
+import { Plus, Edit2, Trash2, Package, Eye, EyeOff, Copy, Leaf, Drumstick, Star } from 'lucide-react'
 import { cn } from '@/utils/helpers'
 import toast from 'react-hot-toast'
 
@@ -230,7 +230,7 @@ export default function MenuPage() {
     { header: 'Product', cell: (row) => (
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center flex-shrink-0 text-lg">
-          {row.is_veg ? '🥗' : '🍗'}
+          {row.is_veg ? <Leaf className="w-5 h-5 text-emerald-500" /> : <Drumstick className="w-5 h-5 text-red-500" />}
         </div>
         <div>
           <p className="text-sm font-medium text-slate-800 dark:text-slate-200">{row.name}</p>
@@ -303,7 +303,7 @@ export default function MenuPage() {
           <div className="col-span-2 flex flex-wrap gap-4">
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={form.is_veg} onChange={e => setForm(p => ({ ...p, is_veg: e.target.checked }))} className="w-4 h-4 text-primary-600 rounded" />
-              <span className="text-sm text-slate-700 dark:text-slate-300">🟢 Vegetarian</span>
+              <span className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-1"><Leaf className="w-3.5 h-3.5 text-emerald-500" /> Vegetarian</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={form.is_available} onChange={e => setForm(p => ({ ...p, is_available: e.target.checked }))} className="w-4 h-4 text-primary-600 rounded" />
@@ -311,7 +311,7 @@ export default function MenuPage() {
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={form.is_featured} onChange={e => setForm(p => ({ ...p, is_featured: e.target.checked }))} className="w-4 h-4 text-primary-600 rounded" />
-              <span className="text-sm text-slate-700 dark:text-slate-300">⭐ Featured</span>
+              <span className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-1"><Star className="w-3.5 h-3.5 text-amber-500" /> Featured</span>
             </label>
           </div>
         </div>

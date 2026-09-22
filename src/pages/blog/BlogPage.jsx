@@ -122,9 +122,9 @@ Paper kitchen printers jam, run out of ribbon during rush hour, and make it impo
 ### The Royal Spice KDS Solution:
 - **Station-Based Routing:** Filter tickets by Bar, Grill, Tandoor, or Main Kitchen stations.
 - **Color-Coded Timers:** 
-  - 🟢 **Normal:** Orders under 10 minutes.
-  - 🟡 **Warning:** Orders approaching threshold (10–15 mins).
-  - 🔴 **Overdue:** Flashing red alert for orders exceeding 15 minutes.
+  - Normal: Orders under 10 minutes.
+  - Warning: Orders approaching threshold (10–15 mins).
+  - Overdue: Flashing red alert for orders exceeding 15 minutes.
 - **Real-Time Bumping:** Kitchen staff tap once to move items to "Preparing", and tap again when "Ready to Serve".
 - **Real-Time Waiter Sync:** The waiter's handheld device vibrates the instant the dish is marked ready.
     `,
@@ -178,10 +178,10 @@ Managing 20-50 tables across multiple floors during Saturday night service requi
 
 ### Features Highlight:
 - **Status Color Coding:**
-  - 🟢 **Available:** Table is sanitized and ready to seat.
-  - 🔴 **Occupied:** Active diners with ongoing orders.
-  - 🟡 **Billing:** Guests have requested the bill.
-  - 🟣 **Cleaning:** Diners left, pending busser cleaning.
+  - Available: Table is sanitized and ready to seat.
+  - Occupied: Active diners with ongoing orders.
+  - Billing: Guests have requested the bill.
+  - Cleaning: Diners left, pending busser cleaning.
 - **Multi-Floor Support:** Switch effortlessly between Ground Dining, VIP Lounge, and Rooftop Bar.
 - **Drag-and-Drop Table Merging:** Combine adjacent tables for large wedding parties and corporate dinners.
     `,
@@ -338,7 +338,7 @@ export default function BlogPage() {
                 
                 <div className="flex items-center gap-3 text-xs mb-3">
                   <span className="px-2.5 py-0.5 rounded-full bg-primary-500/20 text-primary-300 font-semibold uppercase tracking-wider text-[10px]">
-                    ★ Featured Story
+                    Featured Story
                   </span>
                   <span className="text-slate-500">•</span>
                   <span className="text-slate-400">{featuredPost.category}</span>
