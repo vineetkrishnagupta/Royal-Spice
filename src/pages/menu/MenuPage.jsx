@@ -198,16 +198,36 @@ export default function MenuPage() {
 
   useEffect(() => { if (activeTab === 'Products') fetchProducts() }, [fetchProducts, activeTab])
 
-  const openAdd = () => { setEditing(null); setForm({ name: '', description: '', price: '', cost_price: '', category_id: categories[0]?.id || '', tax_id: taxes[0]?.id || '', image_url: '', is_veg: true, is_available: true, is_featured: false, prep_time: 15 }); setShowModal(true) }
-  const openEdit = (p) => { setEditing(p); setForm({ name: p.name, description: p.description || '', price: String(p.price), cost_price: String(p.cost_price || 0), category_id: p.category_id || '', tax_id: p.tax_id || '', image_url: p.image_url || '', is_veg: p.is_veg, is_available: p.is_available, is_featured: p.is_featured, prep_time: p.prep_time || 15 }); setShowModal(true) }
+  const openAdd = () => { setEditing(null); setForm({ name: '', description: '', price: '', cost_price: '', category_id: categories[0]?.id || '', tax_id: taxes[0]?.id || '', image_url: '', image_file: null, is_veg: true, is_available: true, is_featured: false, prep_time: 15 }); setShowModal(true) }
+  const openEdit = (p) => { setEditing(p); setForm({ name: p.name, description: p.description || '', price: String(p.price), cost_price: String(p.cost_price || 0), category_id: p.category_id || '', tax_id: p.tax_id || '', image_url: p.image_url || '', image_file: null, is_veg: p.is_veg, is_available: p.is_available, is_featured: p.is_featured, prep_time: p.prep_time || 15 }); setShowModal(true) }
 
   const saveProduct = async () => {
     if (!form.name || !form.price) return
     setSaving(true)
-    const payload = { ...form, price: parseFloat(form.price), cost_price: parseFloat(form.cost_price) || 0, prep_time: parseInt(form.prep_time), restaurant_id: restaurantId }
+
+    let finalImageUrl = form.image_url
+    if (form.image_file) {
+      const fileExt = form.image_file.name.split('.').pop()
+      const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`
+      const { error: uploadError } = await supabase.storage.from('menu-images').upload(fileName, form.image_file)
+      
+      if (uploadError) {
+        toast.error('Image upload failed: ' + uploadError.message)
+        setSaving(false)
+        return
+      }
+      
+      const { data: publicUrlData } = supabase.storage.from('menu-images').getPublicUrl(fileName)
+      finalImageUrl = publicUrlData.publicUrl
+    }
+
+    const payload = { ...form, price: parseFloat(form.price), cost_price: parseFloat(form.cost_price) || 0, prep_time: parseInt(form.prep_time), restaurant_id: restaurantId, image_url: finalImageUrl }
+    delete payload.image_file
+
     const { error } = editing
       ? await supabase.from('products').update(payload).eq('id', editing.id)
       : await supabase.from('products').insert(payload)
+
     if (!error) { toast.success(editing ? 'Product updated!' : 'Product added!'); fetchProducts(); setShowModal(false) }
     else toast.error(error.message)
     setSaving(false)
@@ -313,27 +333,13 @@ export default function MenuPage() {
                 onChange={(e) => {
                   const file = e.target.files[0]
                   if (!file) return
-                  const reader = new FileReader()
-                  reader.onload = (event) => {
-                    const img = new Image()
-                    img.onload = () => {
-                      const canvas = document.createElement('canvas')
-                      const MAX_WIDTH = 400
-                      const scaleSize = MAX_WIDTH / img.width
-                      canvas.width = MAX_WIDTH
-                      canvas.height = img.height * scaleSize
-                      const ctx = canvas.getContext('2d')
-                      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-                      setForm(p => ({ ...p, image_url: canvas.toDataURL('image/jpeg', 0.8) }))
-                    }
-                    img.src = event.target.result
-                  }
-                  reader.readAsDataURL(file)
+                  const previewUrl = URL.createObjectURL(file)
+                  setForm(p => ({ ...p, image_url: previewUrl, image_file: file }))
                 }}
                 className="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer dark:file:bg-primary-900/30 dark:file:text-primary-400"
               />
               {form.image_url && (
-                <button type="button" onClick={() => setForm(p => ({ ...p, image_url: '' }))} className="text-red-500 text-sm hover:underline">Remove</button>
+                <button type="button" onClick={() => setForm(p => ({ ...p, image_url: '', image_file: null }))} className="text-red-500 text-sm hover:underline">Remove</button>
               )}
             </div>
           </div>
