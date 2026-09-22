@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import Cropper from 'react-easy-crop'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
 import { formatCurrency } from '@/utils/formatters'
@@ -173,6 +174,32 @@ export default function MenuPage() {
     name: '', description: '', price: '', cost_price: '', category_id: '', tax_id: '', is_veg: true, is_available: true, is_featured: false, prep_time: 15,
   })
 
+  // Cropping State
+  const [cropModalOpen, setCropModalOpen] = useState(false)
+  const [cropImageSrc, setCropImageSrc] = useState(null)
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }, [])
+
+  const generateCroppedImage = async () => {
+    if (!cropImageSrc || !croppedAreaPixels) return
+    const image = new Image()
+    image.src = cropImageSrc
+    await new Promise(resolve => image.onload = resolve)
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    canvas.width = 400
+    canvas.height = 400
+    ctx.drawImage(image, croppedAreaPixels.x, croppedAreaPixels.y, croppedAreaPixels.width, croppedAreaPixels.height, 0, 0, 400, 400)
+    setForm(p => ({ ...p, image_url: canvas.toDataURL('image/jpeg', 0.8) }))
+    setCropModalOpen(false)
+    setCropImageSrc(null)
+  }
+
   const fetchProducts = useCallback(async () => {
     if (!restaurantId) return
     setLoading(true)
@@ -315,20 +342,11 @@ export default function MenuPage() {
                   if (!file) return
                   const reader = new FileReader()
                   reader.onload = (event) => {
-                    const img = new Image()
-                    img.onload = () => {
-                      const canvas = document.createElement('canvas')
-                      const MAX_WIDTH = 400
-                      const scaleSize = MAX_WIDTH / img.width
-                      canvas.width = MAX_WIDTH
-                      canvas.height = img.height * scaleSize
-                      const ctx = canvas.getContext('2d')
-                      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-                      setForm(p => ({ ...p, image_url: canvas.toDataURL('image/jpeg', 0.8) }))
-                    }
-                    img.src = event.target.result
+                    setCropImageSrc(event.target.result)
+                    setCropModalOpen(true)
                   }
                   reader.readAsDataURL(file)
+                  e.target.value = null
                 }}
                 className="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer dark:file:bg-primary-900/30 dark:file:text-primary-400"
               />
@@ -360,6 +378,26 @@ export default function MenuPage() {
           <Button onClick={saveProduct} loading={saving} disabled={!form.name || !form.price} fullWidth>
             {editing ? 'Update Product' : 'Add Product'}
           </Button>
+        </div>
+      </Modal>
+      {/* Crop Modal */}
+      <Modal isOpen={cropModalOpen} onClose={() => { setCropModalOpen(false); setCropImageSrc(null) }} title="Crop Image" size="md">
+        <div className="relative w-full h-64 bg-slate-900 rounded-lg overflow-hidden">
+          {cropImageSrc && (
+            <Cropper
+              image={cropImageSrc}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropChange={setCrop}
+              onCropComplete={onCropComplete}
+              onZoomChange={setZoom}
+            />
+          )}
+        </div>
+        <div className="mt-4 flex gap-2">
+          <Button variant="outline" onClick={() => { setCropModalOpen(false); setCropImageSrc(null) }} fullWidth>Cancel</Button>
+          <Button onClick={generateCroppedImage} fullWidth>Apply Crop</Button>
         </div>
       </Modal>
     </div>
