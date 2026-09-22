@@ -302,7 +302,40 @@ export default function MenuPage() {
           <Select label="Tax" value={form.tax_id} onChange={e => setForm(p => ({ ...p, tax_id: e.target.value }))} options={taxes.map(t => ({ value: t.id, label: `${t.name} (${t.rate}%)` }))} placeholder="Select tax" />
           <Input label="Prep Time (mins)" type="number" value={form.prep_time} onChange={e => setForm(p => ({ ...p, prep_time: e.target.value }))} min={1} />
           <div className="col-span-2">
-            <Input label="Image URL" value={form.image_url} onChange={e => setForm(p => ({ ...p, image_url: e.target.value }))} placeholder="https://example.com/image.jpg" />
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Product Image</label>
+            <div className="flex items-center gap-4">
+              {form.image_url && (
+                <img src={form.image_url} alt="Preview" className="w-16 h-16 rounded-xl object-cover border border-slate-200 dark:border-slate-700" />
+              )}
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files[0]
+                  if (!file) return
+                  const reader = new FileReader()
+                  reader.onload = (event) => {
+                    const img = new Image()
+                    img.onload = () => {
+                      const canvas = document.createElement('canvas')
+                      const MAX_WIDTH = 400
+                      const scaleSize = MAX_WIDTH / img.width
+                      canvas.width = MAX_WIDTH
+                      canvas.height = img.height * scaleSize
+                      const ctx = canvas.getContext('2d')
+                      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+                      setForm(p => ({ ...p, image_url: canvas.toDataURL('image/jpeg', 0.8) }))
+                    }
+                    img.src = event.target.result
+                  }
+                  reader.readAsDataURL(file)
+                }}
+                className="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer dark:file:bg-primary-900/30 dark:file:text-primary-400"
+              />
+              {form.image_url && (
+                <button type="button" onClick={() => setForm(p => ({ ...p, image_url: '' }))} className="text-red-500 text-sm hover:underline">Remove</button>
+              )}
+            </div>
           </div>
           <div className="col-span-2">
             <Textarea label="Description" value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} placeholder="Product description..." rows={2} />
