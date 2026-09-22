@@ -62,6 +62,9 @@ ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "restaurants_select" ON restaurants FOR SELECT
   USING (id = get_restaurant_id());
 
+CREATE POLICY "restaurants_insert" ON restaurants FOR INSERT
+  TO authenticated WITH CHECK (true);
+
 CREATE POLICY "restaurants_update" ON restaurants FOR UPDATE
   USING (id = get_restaurant_id() AND is_admin_or_owner());
 
@@ -71,6 +74,9 @@ CREATE POLICY "restaurants_update" ON restaurants FOR UPDATE
 CREATE POLICY "branches_select" ON branches FOR SELECT
   USING (restaurant_id = get_restaurant_id());
 
+CREATE POLICY "branches_insert" ON branches FOR INSERT
+  TO authenticated WITH CHECK (true);
+
 CREATE POLICY "branches_all" ON branches FOR ALL
   USING (restaurant_id = get_restaurant_id() AND is_admin_or_owner());
 
@@ -79,6 +85,9 @@ CREATE POLICY "branches_all" ON branches FOR ALL
 -- ============================================================
 CREATE POLICY "settings_select" ON restaurant_settings FOR SELECT
   USING (restaurant_id = get_restaurant_id());
+
+CREATE POLICY "settings_insert" ON restaurant_settings FOR INSERT
+  TO authenticated WITH CHECK (true);
 
 CREATE POLICY "settings_all" ON restaurant_settings FOR ALL
   USING (restaurant_id = get_restaurant_id() AND is_admin_or_owner());
@@ -379,3 +388,18 @@ CREATE POLICY "audit_logs_select" ON audit_logs FOR SELECT
 
 CREATE POLICY "audit_logs_insert" ON audit_logs FOR INSERT
   WITH CHECK (restaurant_id = get_restaurant_id());
+
+-- ============================================================
+-- SUPABASE REALTIME CONFIGURATION
+-- Enable realtime for orders, items, tables, notifications, etc.
+-- ============================================================
+DO $$
+BEGIN
+  BEGIN
+    ALTER PUBLICATION supabase_realtime ADD TABLE orders, order_items, tables, notifications, kitchen_orders;
+  EXCEPTION WHEN OTHERS THEN
+    -- If tables are already in publication, ignore
+    NULL;
+  END;
+END $$;
+
