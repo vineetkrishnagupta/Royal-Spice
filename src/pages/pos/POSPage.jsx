@@ -41,6 +41,7 @@ export default function POSPage() {
   const [showTable, setShowTable] = useState(false)
   const [showDiscount, setShowDiscount] = useState(false)
   const [showHoldOrders, setShowHoldOrders] = useState(false)
+  const [mobileCartOpen, setMobileCartOpen] = useState(false)
   const [savingOrder, setSavingOrder] = useState(false)
 
   const restaurantId = restaurant?.id
@@ -150,47 +151,45 @@ export default function POSPage() {
   const filteredProducts = products
 
   return (
-    <div className="flex h-full gap-0 overflow-hidden">
-      {/* ── Left: Categories ── */}
-      <div className="w-40 lg:w-44 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col flex-shrink-0 overflow-y-auto no-scrollbar">
-        <div className="px-3 py-4">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-1">Categories</p>
-          <div className="space-y-1">
+    <div className="flex h-full gap-0 overflow-hidden flex-col lg:flex-row relative">
+      {/* ── Left/Top: Categories ── */}
+      <div className="lg:w-44 bg-white dark:bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 flex lg:flex-col flex-shrink-0 overflow-x-auto lg:overflow-y-auto no-scrollbar">
+        <div className="flex lg:block px-3 py-2 lg:py-4 gap-2 lg:gap-0 lg:space-y-1 w-max lg:w-full">
+          <p className="hidden lg:block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-1">Categories</p>
+          <button
+            onClick={() => setSelectedCategory('all')}
+            className={cn(
+              'flex-shrink-0 w-auto lg:w-full flex items-center gap-2 px-3 py-2 lg:py-2.5 rounded-lg text-sm font-medium transition-all text-left whitespace-nowrap',
+              selectedCategory === 'all'
+                ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-400'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800',
+            )}
+          >
+            <Grid3x3 className="w-4 h-4 flex-shrink-0" />
+            <span className="truncate">All Items</span>
+          </button>
+          {categories.map(cat => (
             <button
-              onClick={() => setSelectedCategory('all')}
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
               className={cn(
-                'w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-left',
-                selectedCategory === 'all'
+                'flex-shrink-0 w-auto lg:w-full flex items-center gap-2 px-3 py-2 lg:py-2.5 rounded-lg text-sm font-medium transition-all text-left whitespace-nowrap',
+                selectedCategory === cat.id
                   ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-400'
                   : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800',
               )}
             >
-              <Grid3x3 className="w-4 h-4 flex-shrink-0" />
-              <span className="truncate">All Items</span>
+              {cat.color && (
+                <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: cat.color }} />
+              )}
+              <span className="truncate">{cat.name}</span>
             </button>
-            {categories.map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={cn(
-                  'w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-left',
-                  selectedCategory === cat.id
-                    ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-400'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800',
-                )}
-              >
-                {cat.color && (
-                  <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: cat.color }} />
-                )}
-                <span className="truncate">{cat.name}</span>
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
 
       {/* ── Center: Products ── */}
-      <div className="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-slate-950 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-slate-950 overflow-hidden relative pb-16 lg:pb-0">
         {/* Order type + Search bar */}
         <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3 space-y-3">
           {/* Order type selector */}
@@ -245,8 +244,36 @@ export default function POSPage() {
         </div>
       </div>
 
+      {/* ── Mobile Floating Cart Button ── */}
+      {cart.items.length > 0 && (
+        <div className="lg:hidden absolute bottom-0 left-0 right-0 p-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
+          <button onClick={() => setMobileCartOpen(true)} className="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-3 font-semibold shadow-lg transition-colors flex items-center justify-between px-4">
+            <div className="flex items-center gap-2">
+              <ShoppingBag className="w-5 h-5" />
+              <span>{cart.items.reduce((acc, item) => acc + item.quantity, 0)} items</span>
+            </div>
+            <span>View Cart • {formatCurrency(cart.totals.finalTotal)}</span>
+          </button>
+        </div>
+      )}
+
       {/* ── Right: Cart / Order ── */}
-      <div className="w-80 lg:w-96 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col flex-shrink-0">
+      <div className={cn(
+        "bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col flex-shrink-0 z-50",
+        "fixed inset-0 lg:relative lg:w-96 transition-transform duration-300",
+        mobileCartOpen ? "translate-y-0" : "translate-y-full lg:translate-y-0"
+      )}>
+        {/* Mobile Close Button */}
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+           <h2 className="font-bold text-lg text-slate-800 dark:text-white flex items-center gap-2">
+             <ShoppingBag className="w-5 h-5 text-primary-600" />
+             Your Order
+           </h2>
+           <button onClick={() => setMobileCartOpen(false)} className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-slate-500 transition-colors">
+             <X className="w-5 h-5" />
+           </button>
+        </div>
+
         {/* Order Header */}
         <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center justify-between mb-2">
