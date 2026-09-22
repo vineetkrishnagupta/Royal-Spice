@@ -340,7 +340,7 @@ export default function BlogPage() {
             {selectedCategory === 'All' && !searchQuery && (
               <article 
                 onClick={() => setActiveArticle(featuredPost)}
-                className="group cursor-pointer rounded-2xl bg-gradient-to-br from-slate-900 to-slate-900/60 border border-slate-200 dark:border-slate-800 hover:border-primary-500/50 p-6 sm:p-8 transition-all hover:shadow-2xl hover:shadow-primary-500/5 relative overflow-hidden"
+                className="group cursor-pointer rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200/60 dark:from-slate-900 dark:to-slate-900/60 border border-slate-200 dark:border-slate-800 hover:border-primary-500/50 p-6 sm:p-8 transition-all hover:shadow-2xl hover:shadow-primary-500/5 relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20 group-hover:bg-primary-500/15 transition-all" />
                 
@@ -482,7 +482,7 @@ export default function BlogPage() {
             </div>
 
             {/* Quick Terminal Launch Widget */}
-            <div className="rounded-xl bg-gradient-to-br from-primary-950/60 to-slate-900 border border-primary-500/20 p-5">
+            <div className="rounded-xl bg-gradient-to-br from-primary-50 to-slate-100 dark:from-primary-950/60 dark:to-slate-900 border border-primary-500/20 p-5">
               <div className="flex items-center gap-2 text-primary-400 text-xs font-bold uppercase tracking-wider mb-2">
                 <Flame className="w-4 h-4" /> Live POS Demo
               </div>
