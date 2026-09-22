@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import {
   BookOpen, Search, Clock, Calendar, User, ArrowRight, Tag,
   Sparkles, CheckCircle2, ChevronRight, Layers, Database,
@@ -377,6 +378,11 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-primary-500 selection:text-white">
+      <Helmet>
+        <title>Blog & Tech Journal | Royal Spice POS</title>
+        <meta name="description" content="Explore technical deep dives, architecture decisions, and development updates for the Royal Spice Point of Sale system." />
+      </Helmet>
+
       {/* Top Bar / Navigation */}
       <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">

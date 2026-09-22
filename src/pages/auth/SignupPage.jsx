@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Eye, EyeOff, Mail, Lock, User, Building2 } from 'lucide-react'
@@ -45,6 +46,10 @@ export default function SignupPage() {
 
   return (
     <div className="space-y-6">
+      <Helmet>
+        <title>Create Account | Royal Spice POS</title>
+        <meta name="description" content="Create a new account for Royal Spice POS system." />
+      </Helmet>
       <div>
         <h2 className="text-xl font-bold text-white">Create account</h2>
         <p className="text-slate-400 text-sm mt-1">Set up your POS account</p>

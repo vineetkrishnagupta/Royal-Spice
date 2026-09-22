@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /signup
+Allow: /blog
+
+# Disallow crawling of internal app routes since they require authentication
+Disallow: /dashboard
+Disallow: /pos
+Disallow: /orders
+Disallow: /tables
+Disallow: /menu
+Disallow: /inventory
+Disallow: /customers
+Disallow: /staff
+Disallow: /reports
+Disallow: /settings
+
+Sitemap: https://royalspice-eight.vercel.app/sitemap.xml

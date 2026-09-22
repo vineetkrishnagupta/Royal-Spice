@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
@@ -30,10 +31,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-white">Welcome back</h2>
-        <p className="text-slate-400 text-sm mt-1">Sign in to your POS account</p>
+    <div className="w-full max-w-md space-y-8 animate-fade-in relative z-10">
+      <Helmet>
+        <title>Login | Royal Spice POS</title>
+        <meta name="description" content="Sign in to your Royal Spice POS account to manage orders, inventory, and restaurant operations." />
+      </Helmet>
+
+      <div className="text-center">
+        <h2 className="text-3xl font-bold tracking-tight text-white mb-2">Welcome back</h2>
+        <p className="text-slate-400">Sign in to your account to continue</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -109,7 +115,7 @@ export default function LoginPage() {
       <div className="bg-white/5 rounded-lg p-3 border border-white/10">
         <p className="text-xs text-slate-400 font-medium mb-1">Demo credentials:</p>
         <p className="text-xs text-slate-500">Email: admin@royalspice.in</p>
-        <p className="text-xs text-slate-500">Password: demo123456</p>
+        <p className="text-xs text-slate-500">Password: Demo@1234</p>
       </div>
     </div>
   )
