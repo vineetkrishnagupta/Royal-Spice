@@ -26,7 +26,7 @@ function CategoryTab({ restaurantId }) {
 
   const fetch = async () => {
     setLoading(true)
-    const { data } = await supabase.from('categories').select('*').eq('restaurant_id', restaurantId).order('sort_order')
+    const { data } = await supabase.from('categories').select('*').eq('restaurant_id', restaurantId).order('sort_order', { nullsFirst: false }).order('created_at', { ascending: false })
     setCategories(data || [])
     setLoading(false)
   }
@@ -208,7 +208,8 @@ export default function MenuPage() {
       .select('*, categories(name), taxes(rate, name)', { count: 'exact' })
       .eq('restaurant_id', restaurantId)
       .is('deleted_at', null)
-      .order('sort_order')
+      .order('sort_order', { nullsFirst: false })
+      .order('created_at', { ascending: false })
       .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1)
     if (search) q = q.ilike('name', `%${search}%`)
     const { data, count } = await q

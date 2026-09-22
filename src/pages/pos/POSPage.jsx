@@ -54,7 +54,8 @@ export default function POSPage() {
       .select('*')
       .eq('restaurant_id', restaurantId)
       .eq('is_active', true)
-      .order('sort_order')
+      .order('sort_order', { nullsFirst: false })
+      .order('created_at', { ascending: false })
       .then(({ data }) => setCategories(data || []))
   }, [restaurantId])
 
@@ -71,7 +72,8 @@ export default function POSPage() {
       .eq('restaurant_id', restaurantId)
       .eq('is_available', true)
       .is('deleted_at', null)
-      .order('sort_order')
+      .order('sort_order', { nullsFirst: false })
+      .order('created_at', { ascending: false })
 
     if (selectedCategory !== 'all') query.eq('category_id', selectedCategory)
     if (search) query.ilike('name', `%${search}%`)
