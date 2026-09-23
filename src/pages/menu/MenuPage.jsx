@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Cropper from 'react-easy-crop'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
@@ -158,6 +159,7 @@ function TaxTab({ restaurantId }) {
 
 export default function MenuPage() {
   const { restaurant } = useAuth()
+  const navigate = useNavigate()
   const restaurantId = restaurant?.id
   const [activeTab, setActiveTab] = useState('Products')
   const [products, setProducts] = useState([])
@@ -167,38 +169,6 @@ export default function MenuPage() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
-  const [showModal, setShowModal] = useState(false)
-  const [editing, setEditing] = useState(null)
-  const [saving, setSaving] = useState(false)
-  const [form, setForm] = useState({
-    name: '', description: '', price: '', cost_price: '', category_id: '', tax_id: '', is_veg: true, is_available: true, is_featured: false, prep_time: 15,
-  })
-
-  // Cropping State
-  const [cropModalOpen, setCropModalOpen] = useState(false)
-  const [cropImageSrc, setCropImageSrc] = useState(null)
-  const [crop, setCrop] = useState({ x: 0, y: 0 })
-  const [zoom, setZoom] = useState(1)
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
-
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels)
-  }, [])
-
-  const generateCroppedImage = async () => {
-    if (!cropImageSrc || !croppedAreaPixels) return
-    const image = new Image()
-    image.src = cropImageSrc
-    await new Promise(resolve => image.onload = resolve)
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    canvas.width = 400
-    canvas.height = 400
-    ctx.drawImage(image, croppedAreaPixels.x, croppedAreaPixels.y, croppedAreaPixels.width, croppedAreaPixels.height, 0, 0, 400, 400)
-    setForm(p => ({ ...p, image_url: canvas.toDataURL('image/jpeg', 0.8) }))
-    setCropModalOpen(false)
-    setCropImageSrc(null)
-  }
 
   const fetchProducts = useCallback(async () => {
     if (!restaurantId) return
@@ -226,20 +196,8 @@ export default function MenuPage() {
 
   useEffect(() => { if (activeTab === 'Products') fetchProducts() }, [fetchProducts, activeTab])
 
-  const openAdd = () => { setEditing(null); setForm({ name: '', description: '', price: '', cost_price: '', category_id: categories[0]?.id || '', tax_id: taxes[0]?.id || '', image_url: '', is_veg: true, is_available: true, is_featured: false, prep_time: 15 }); setShowModal(true) }
-  const openEdit = (p) => { setEditing(p); setForm({ name: p.name, description: p.description || '', price: String(p.price), cost_price: String(p.cost_price || 0), category_id: p.category_id || '', tax_id: p.tax_id || '', image_url: p.image_url || '', is_veg: p.is_veg, is_available: p.is_available, is_featured: p.is_featured, prep_time: p.prep_time || 15 }); setShowModal(true) }
-
-  const saveProduct = async () => {
-    if (!form.name || !form.price) return
-    setSaving(true)
-    const payload = { ...form, price: parseFloat(form.price), cost_price: parseFloat(form.cost_price) || 0, prep_time: parseInt(form.prep_time), restaurant_id: restaurantId }
-    const { error } = editing
-      ? await supabase.from('products').update(payload).eq('id', editing.id)
-      : await supabase.from('products').insert(payload)
-    if (!error) { toast.success(editing ? 'Product updated!' : 'Product added!'); fetchProducts(); setShowModal(false) }
-    else toast.error(error.message)
-    setSaving(false)
-  }
+  const openAdd = () => { navigate('/menu/product/add') }
+  const openEdit = (p) => { navigate(`/menu/product/edit/${p.id}`) }
 
   const toggleAvailable = async (product) => {
     await supabase.from('products').update({ is_available: !product.is_available }).eq('id', product.id)
@@ -318,89 +276,6 @@ export default function MenuPage() {
         </div>
       )}
 
-      {/* Product modal */}
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title={editing ? 'Edit Product' : 'Add Product'} size="lg">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2">
-            <Input label="Product Name" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="e.g. Paneer Tikka" required />
-          </div>
-          <Input label="Price (₹)" type="number" value={form.price} onChange={e => setForm(p => ({ ...p, price: e.target.value }))} placeholder="0.00" required />
-          <Input label="Cost Price (₹)" type="number" value={form.cost_price} onChange={e => setForm(p => ({ ...p, cost_price: e.target.value }))} placeholder="0.00" />
-          <Select label="Category" value={form.category_id} onChange={e => setForm(p => ({ ...p, category_id: e.target.value }))} options={categories.map(c => ({ value: c.id, label: c.name }))} placeholder="Select category" />
-          <Select label="Tax" value={form.tax_id} onChange={e => setForm(p => ({ ...p, tax_id: e.target.value }))} options={taxes.map(t => ({ value: t.id, label: `${t.name} (${t.rate}%)` }))} placeholder="Select tax" />
-          <Input label="Prep Time (mins)" type="number" value={form.prep_time} onChange={e => setForm(p => ({ ...p, prep_time: e.target.value }))} min={1} />
-          <div className="col-span-2">
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Product Image</label>
-            <div className="flex items-center gap-4">
-              {form.image_url && (
-                <img src={form.image_url} alt="Preview" className="w-16 h-16 rounded-xl object-cover border border-slate-200 dark:border-slate-700" />
-              )}
-              <input 
-                type="file" 
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0]
-                  if (!file) return
-                  const reader = new FileReader()
-                  reader.onload = (event) => {
-                    setCropImageSrc(event.target.result)
-                    setCropModalOpen(true)
-                  }
-                  reader.readAsDataURL(file)
-                  e.target.value = null
-                }}
-                className="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer dark:file:bg-primary-900/30 dark:file:text-primary-400"
-              />
-              {form.image_url && (
-                <button type="button" onClick={() => setForm(p => ({ ...p, image_url: '' }))} className="text-red-500 text-sm hover:underline">Remove</button>
-              )}
-            </div>
-          </div>
-          <div className="col-span-2">
-            <Textarea label="Description" value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} placeholder="Product description..." rows={2} />
-          </div>
-          <div className="col-span-2 flex flex-wrap gap-4">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={form.is_veg} onChange={e => setForm(p => ({ ...p, is_veg: e.target.checked }))} className="w-4 h-4 text-primary-600 rounded" />
-              <span className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-1"><Leaf className="w-3.5 h-3.5 text-emerald-500" /> Vegetarian</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={form.is_available} onChange={e => setForm(p => ({ ...p, is_available: e.target.checked }))} className="w-4 h-4 text-primary-600 rounded" />
-              <span className="text-sm text-slate-700 dark:text-slate-300">Available</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={form.is_featured} onChange={e => setForm(p => ({ ...p, is_featured: e.target.checked }))} className="w-4 h-4 text-primary-600 rounded" />
-              <span className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-1"><Star className="w-3.5 h-3.5 text-amber-500" /> Featured</span>
-            </label>
-          </div>
-        </div>
-        <div className="flex gap-2 mt-6">
-          <Button variant="outline" onClick={() => setShowModal(false)} fullWidth>Cancel</Button>
-          <Button onClick={saveProduct} loading={saving} disabled={!form.name || !form.price} fullWidth>
-            {editing ? 'Update Product' : 'Add Product'}
-          </Button>
-        </div>
-      </Modal>
-      {/* Crop Modal */}
-      <Modal isOpen={cropModalOpen} onClose={() => { setCropModalOpen(false); setCropImageSrc(null) }} title="Crop Image" size="md">
-        <div className="relative w-full h-64 bg-slate-900 rounded-lg overflow-hidden">
-          {cropImageSrc && (
-            <Cropper
-              image={cropImageSrc}
-              crop={crop}
-              zoom={zoom}
-              aspect={1}
-              onCropChange={setCrop}
-              onCropComplete={onCropComplete}
-              onZoomChange={setZoom}
-            />
-          )}
-        </div>
-        <div className="mt-4 flex gap-2">
-          <Button variant="outline" onClick={() => { setCropModalOpen(false); setCropImageSrc(null) }} fullWidth>Cancel</Button>
-          <Button onClick={generateCroppedImage} fullWidth>Apply Crop</Button>
-        </div>
-      </Modal>
     </div>
   )
 }

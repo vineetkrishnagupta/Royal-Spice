@@ -17,6 +17,7 @@ const OrdersPage       = lazy(() => import('@/pages/orders/OrdersPage'))
 const TablesPage       = lazy(() => import('@/pages/tables/TablesPage'))
 const KDSPage          = lazy(() => import('@/pages/kitchen/KDSPage'))
 const MenuPage         = lazy(() => import('@/pages/menu/MenuPage'))
+const ProductFormPage  = lazy(() => import('@/pages/menu/ProductFormPage'))
 const InventoryPage    = lazy(() => import('@/pages/inventory/InventoryPage'))
 const CustomersPage    = lazy(() => import('@/pages/customers/CustomersPage'))
 const StaffPage        = lazy(() => import('@/pages/staff/StaffPage'))
@@ -53,7 +54,9 @@ export default function App() {
             <Route path="/orders" element={<SuspenseWrap><OrdersPage /></SuspenseWrap>} />
             <Route path="/tables" element={<SuspenseWrap><TablesPage /></SuspenseWrap>} />
             <Route path="/kitchen" element={<SuspenseWrap><KDSPage /></SuspenseWrap>} />
-            <Route path="/menu/*" element={<SuspenseWrap><MenuPage /></SuspenseWrap>} />
+            <Route path="/menu" element={<SuspenseWrap><MenuPage /></SuspenseWrap>} />
+            <Route path="/menu/product/add" element={<SuspenseWrap><ProductFormPage /></SuspenseWrap>} />
+            <Route path="/menu/product/edit/:id" element={<SuspenseWrap><ProductFormPage /></SuspenseWrap>} />
             <Route path="/inventory/*" element={<SuspenseWrap><InventoryPage /></SuspenseWrap>} />
             <Route path="/customers" element={<SuspenseWrap><CustomersPage /></SuspenseWrap>} />
             <Route path="/staff" element={<SuspenseWrap><StaffPage /></SuspenseWrap>} />
