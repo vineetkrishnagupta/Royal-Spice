@@ -9,17 +9,17 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#fef3ec',
-          100: '#fde4d0',
-          200: '#fbc7a1',
-          300: '#f9a172',
-          400: '#f77b43',
-          500: '#f55514',
-          600: '#d4440f',
-          700: '#b0360b',
-          800: '#8c2a09',
-          900: '#701f07',
-          950: '#3d0e03',
+          50:  'rgb(var(--color-primary-50)  / <alpha-value>)',
+          100: 'rgb(var(--color-primary-100) / <alpha-value>)',
+          200: 'rgb(var(--color-primary-200) / <alpha-value>)',
+          300: 'rgb(var(--color-primary-300) / <alpha-value>)',
+          400: 'rgb(var(--color-primary-400) / <alpha-value>)',
+          500: 'rgb(var(--color-primary-500) / <alpha-value>)',
+          600: 'rgb(var(--color-primary-600) / <alpha-value>)',
+          700: 'rgb(var(--color-primary-700) / <alpha-value>)',
+          800: 'rgb(var(--color-primary-800) / <alpha-value>)',
+          900: 'rgb(var(--color-primary-900) / <alpha-value>)',
+          950: 'rgb(var(--color-primary-950) / <alpha-value>)',
         },
         slate: {
           850: '#172033',

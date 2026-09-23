@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Dynamic Primary Color Variables ─────────────────────────────────── */
+:root {
+  --color-primary-50:  254 243 236;
+  --color-primary-100: 253 228 208;
+  --color-primary-200: 251 199 161;
+  --color-primary-300: 249 161 114;
+  --color-primary-400: 247 123 67;
+  --color-primary-500: 245 85 20;
+  --color-primary-600: 212 68 15;
+  --color-primary-700: 176 54 11;
+  --color-primary-800: 140 42 9;
+  --color-primary-900: 112 31 7;
+  --color-primary-950:  61 14 3;
+}
+
 @layer base {
   * {
     box-sizing: border-box;

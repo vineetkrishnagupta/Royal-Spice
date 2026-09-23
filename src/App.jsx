@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import { AuthGuard, GuestGuard } from '@/components/auth/Guards'
 import AppLayout from '@/layouts/AppLayout'
 import AuthLayout from '@/layouts/AuthLayout'
@@ -34,6 +35,7 @@ const SuspenseWrap = ({ children }) => (
 
 export default function App() {
   return (
+    <ThemeProvider>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -88,5 +90,6 @@ export default function App() {
         }}
       />
     </AuthProvider>
+    </ThemeProvider>
   )
 }
